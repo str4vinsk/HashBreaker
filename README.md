@@ -15,7 +15,7 @@ sudo ./INSTALL.sh
 ```
 ---
 
-## Usage
+## 🔨 Usage
 
 Por favor use o comando <code>--help</code> para ver o funcionamento do programa, se tiver qualquer pergunta ou sugestão entre em contato comigo
 
