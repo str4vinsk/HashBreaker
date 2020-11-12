@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import passlib.hash
 import crypt
 import argparse
