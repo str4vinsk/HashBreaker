@@ -1,11 +1,10 @@
-#!/usr/bin/env python
+#/usr/bin/env python
+# -*- coding: utf-8 -*-
 
 import passlib.hash
 import crypt
 import argparse
-
-
-parser = argparse.ArgumentParser(description='Linux hashes breaker script')
+import hashlib
 
 banner = """
   _   _              _       ____                     _               
@@ -14,15 +13,10 @@ banner = """
  |  _  || (_| |\__ \| | | | | |_) || |  |  __/| (_| ||   <|  __/| |       
  |_| |_| \__,_||___/|_| |_| |____/ |_|   \___| \__,_||_|\_\\___||_|   
 
-Codado por: Vitor Conroy AKA str4vinsk
+from: Vitor Conroy AKA str4vinsk
 https://github.com/str4vinsk
 
-Como funciona ? 
-O script pega todas as hashes do arquivo mencionado e faz um processo de bruteforce
-para cada uma delas, pegando cada palavra da wordlist e a criptografando de acordo com o tipo de hash,
-se a hash recém criptografada for igual a hash do arquivo a senha está correta.
-
-Supported Hashes:
+Hash types:
 {1} MD5
 {2} SHA256
 {3} SHA512
@@ -30,18 +24,18 @@ Supported Hashes:
 """
 
 print(banner)
+parser = argparse.ArgumentParser()
 
 
-parser.add_argument('wordlist', type=str, help='A lista de senhas para ser testada')
-parser.add_argument('hashlist', type=str, help='Lista que contém todas as hashes a serem quebradas')
-parser.add_argument('-o', '--output', type=str, help='Arquivo de output')
+parser.add_argument('wordlist', type=str, help='Passwords wordlist')
+parser.add_argument('hashlist', type=str, help='Hash list, it can be just one hash too')
+parser.add_argument('mode', type=str, help='Attack mode, read the README.md file for more info')
+parser.add_argument('-t', '--type', type=str, help='Hash type, look up you')
 
 args = parser.parse_args()
 
-def hashing(hashes):
+def shadow_hashing(hashes):
     for line in passwords:
-        temphash = ''
-
         hashtype = hashes.split('$')[1]
         salt = hashes.split('$')[2]
 
@@ -54,13 +48,32 @@ def hashing(hashes):
         elif (hashtype == '5'):
             temphash = crypt.crypt(line, "$5${0}".format(salt))
         else:
-            print("Hash inválida ou desconhecida.")
+            print("[!!] Invalid Hash.")
             exit(0)
 
         if (temphash == hashes):
                 print("===============================================")
-                print ('Hash --> {0}'.format(temphash))
-                print ('Senha --> {0}'.format(line))
+                print ('[+] Hash --> {0}'.format(temphash))
+                print ('[+] Password --> {0}'.format(line))
+                print("=============================================== \r\n")
+                return
+
+def raw_hashing(inputhash):
+    for line in passwords:
+        if (args.type == '1'):
+            temphash = hashlib.md5(line.encode('utf-8')).hexdigest()
+        elif (args.type == '2'):
+            temphash = hashlib.sha256(line.encode('utf-8')).hexdigest()
+        elif (args.type == '3'):
+            temphash = hashlib.sha512(line.encode('utf-8')).hexdigest()
+        else:
+            print("[!!] Invalid hash type.")
+            exit(0)
+
+        if (temphash == inputhash):
+                print("===============================================")
+                print ('[+] Hash --> {0}'.format(temphash))
+                print ('[+] Password --> {0}'.format(line))
                 print("=============================================== \r\n")
                 return
 
@@ -71,13 +84,17 @@ try:
     hashfile = open(args.hashlist, 'r')
     hasharch = hashfile.read().split('\n')
 except FileNotFoundError:
-    print('Arquivo inexistente')
+    print('[!!] File not found')
     exit(0)
 
-for inputhash in hasharch:
-    if inputhash.strip():
-        hashing(inputhash)
-
-wordlistfile.close()
-hashfile.close()
+if (args.mode == 'raw'):
+    for inputhash in hasharch:
+        if inputhash.strip():
+            raw_hashing(inputhash)
+elif (args.mode == 'shadow'):
+    for inputhash in hasharch:
+        if inputhash.strip():
+            shadow_hashing(inputhash)
+else:
+    print("[!!] Invalid mode, please select a valid one")
 
