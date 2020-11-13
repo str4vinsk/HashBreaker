@@ -35,7 +35,7 @@ hash que siga esse padrão:
 
     $1$5RPVAd$vgsoSANybLDepv2ETcUH7.
 
-Neste modo não é preciso especificar o tipo de hash, o script irá detectar o tipo a partir do numero
+Neste modo não é preciso especificar o tipo de hash, o script irá detectar o tipo a partir do número
 entre os primeiros cifrões da hash. <b>ESTE MODO É USADO ESPECIFICAMENTE PARA O PROPÓSITO DE QUEBRAR SENHAS LINUX</b>
 
 Exemplo de uso:
@@ -46,6 +46,19 @@ Por favor use o comando <code>--help</code> para ver o funcionamento do programa
 
 ---
 
+## Hash List
+
+Use a seguinte tabela para descobrir o número correspondente a determinada hash, utilize esse número como valor do argumento <code>--type</code>
+
+| Tipo de Hash  | Valor Númerico |
+| ------------- | -------------  |
+| MD5           |      1         |
+| SHA 256       |      2         |
+| SHA 512       |      3         |
+
+
+---
+ 
 ## 📖 Author
 <table>
   <tr>
