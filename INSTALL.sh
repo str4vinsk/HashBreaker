@@ -5,7 +5,7 @@
 function install()
 {
 	echo "Installing..."
-        chmod 777 hash.py
+        chmod +x hash.py
         cp hash.py /usr/bin/hashbreaker
 	echo "Done! execute {hashbreaker} to use."
 	exit
