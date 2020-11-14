@@ -112,7 +112,6 @@ if (args.mode == 'raw'):
         print('You have chosen a salted hash type, please specify the salt with -s option')
         exit(0)
     for inputhash in hasharch:
-        print(inputhash)
         if inputhash.strip():
             raw_hashing(inputhash)
 elif (args.mode == 'shadow'):
