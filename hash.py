@@ -18,9 +18,14 @@ https://github.com/str4vinsk
 
 Hash types:
 {1} MD5
-{2} SHA256
-{3} SHA512
-{4} APR1-MD5
+{2} MD5(salt + pass)
+{3} MD5(pass + salt)
+{4} SHA256
+{5} SHA256(salt + pass)
+{6} SHA256(pass + salt)
+{7} SHA512
+{8} SHA512(salt + pass)
+{9} SHA512(pass + salt)
 """
 
 print(banner)
@@ -31,8 +36,11 @@ parser.add_argument('wordlist', type=str, help='Passwords wordlist')
 parser.add_argument('hashlist', type=str, help='Hash list, it can be just one hash too')
 parser.add_argument('mode', type=str, help='Attack mode, read the README.md file for more info')
 parser.add_argument('-t', '--type', type=str, help='Hash type, look up you')
+parser.add_argument('-s', '--salt', type=str, help='Salt value')
 
 args = parser.parse_args()
+
+salted_options = ['2', '3', '5', '6', '8', '9']
 
 def shadow_hashing(hashes):
     for line in passwords:
@@ -63,19 +71,31 @@ def raw_hashing(inputhash):
         if (args.type == '1'):
             temphash = hashlib.md5(line.encode('utf-8')).hexdigest()
         elif (args.type == '2'):
-            temphash = hashlib.sha256(line.encode('utf-8')).hexdigest()
+            temphash = hashlib.md5(args.salt.encode('utf-8') + line.encode('utf-8')).hexdigest()
         elif (args.type == '3'):
+            temphash = hashlib.md5(line.encode('utf-8') + args.salt.encode('utf-8')).hexdigest()
+        elif (args.type == '4'):
+            temphash = hashlib.sha256(line.encode('utf-8')).hexdigest()
+        elif (args.type == '5'):
+            temphash = hashlib.sha256(args.salt.encode('utf-8') + line.encode('utf-8')).hexdigest()
+        elif (args.type == '6'):
+            temphash = hashlib.sha256(line.encode('utf-8') + args.salt.encode('utf-8')).hexdigest()
+        elif (args.type == '7'):
             temphash = hashlib.sha512(line.encode('utf-8')).hexdigest()
+        elif (args.type == '8'):
+            temphash = hashlib.sha512(args.salt.encode('utf-8') + line.encode('utf-8')).hexdigest()
+        elif (args.type == '9'):
+            temphash = hashlib.sha512(line.encode('utf-8') + args.salt.encode('utf-8')).hexdigest()
         else:
             print("[!!] Invalid hash type.")
             exit(0)
 
         if (temphash == inputhash):
-                print("===============================================")
-                print ('[+] Hash --> {0}'.format(temphash))
-                print ('[+] Password --> {0}'.format(line))
-                print("=============================================== \r\n")
-                return
+            print("===============================================")
+            print ('[+] Hash --> {0}'.format(temphash))
+            print ('[+] Password --> {0}'.format(line))
+            print("=============================================== \r\n")
+            return
 
 try:
     wordlistfile = open(args.wordlist, 'r')
@@ -88,7 +108,11 @@ except FileNotFoundError:
     exit(0)
 
 if (args.mode == 'raw'):
+    if (args.type in salted_options and args.salt is None):
+        print('You have chosen a salted hash type, please specify the salt with -s option')
+        exit(0)
     for inputhash in hasharch:
+        print(inputhash)
         if inputhash.strip():
             raw_hashing(inputhash)
 elif (args.mode == 'shadow'):
