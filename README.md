@@ -20,13 +20,14 @@ sudo ./INSTALL.sh
 <b>Modos</b>
 
 Você pode usar o script em dois modos diferentes, o raw ou o shadow.
-O modo <code>raw</code> é usado quando você quer quebrar hashes sem nenhum tipo de salt, como a seguinte
+O modo <code>raw</code> é usado quando você quer quebrar hashes comuns, como a seguinte
 
     ec0e2603172c73a8b644bb9456c1ff6e
 
-Para a utilização desse modo é necessário que você especifique o tipo de hash a ser testada, exemplo:
+Para a utilização desse modo é necessário que você especifique o tipo de hash a ser testada usando a opção <code>--type</code>,
+se a hash contém um salt especifique o salt usando a opção <code>--salt</code>
 
-<code>python hashbreaker.py wordlist hashlist raw -t 1</code>
+<code>python hashbreaker.py wordlist hashlist raw --type 2 --salt Gh5e77H</code>
 
 ---
 
@@ -46,15 +47,21 @@ Por favor use o comando <code>--help</code> para ver o funcionamento do programa
 
 ---
 
-## Hash List
+## Hash Table
 
 Use a seguinte tabela para descobrir o número correspondente a determinada hash, utilize esse número como valor do argumento <code>--type</code>
 
 | Tipo de Hash  | Valor Númerico |
 | ------------- | -------------  |
-| MD5           |      1         |
-| SHA 256       |      2         |
-| SHA 512       |      3         |
+  MD5           |          1     
+  MD5(salt + pass) |       2
+  MD5(pass + salt)|        3
+  SHA256       |           4
+  SHA256(salt + pass) |    5
+  SHA256(pass + salt) |    6
+  SHA512       |           7
+  SHA512(salt + pass) |    8
+  SHA512(pass + salt)|     9
 
 
 ---
