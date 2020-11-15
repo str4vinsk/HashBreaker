@@ -3,16 +3,41 @@ Linux password hashes breaker, used for linux post hacking process.
 
 ## 💾 Installing
 
-Você pode rodar o programa mesmo sem instalar, basta usar o script normalmente dentro da pasta que contém os arquivos necessários.
-
+Baixe o diretório
+```
+git clone https://github.com/str4vinsk/HashBreaker
+```
 Torne o script executável
 ```
 chmod +x INSTALL.sh
 ```
-exeute o arquivo como root para iniciar a instalação
+Execute o arquivo como root para iniciar a instalação
 ```
 sudo ./INSTALL.sh
 ```
+
+---
+
+## Python Versions
+
+ - Hashbreaker suporta somente versões python 3.x
+
+
+---
+
+
+## Dependencies
+
+Hashbreaker depende dos seguintes módulos python <code>argparse</code>, <code>passlib</code> e <code>hashlib</code>
+
+ - Instalando dependências no Windows
+ 
+        c:\python-3.9.0 -m pip install -r requirements.txt
+        
+ - Instalando dependências no Linux
+        
+        sudo pip install -r requirements.txt
+        
 ---
 
 ## 🔨 Usage
@@ -26,8 +51,6 @@ O modo <code>raw</code> é usado quando você quer quebrar hashes comuns, como a
 
 Para a utilização desse modo é necessário que você especifique o tipo de hash a ser testada usando a opção <code>--type</code>,
 se a hash contém um salt especifique o salt usando a opção <code>--salt</code>
-
-<code>python hashbreaker.py wordlist hashlist raw --type 2 --salt Gh5e77H</code>
 
 ---
 
@@ -46,6 +69,23 @@ Exemplo de uso:
 Por favor use o comando <code>--help</code> para ver o funcionamento do programa, se tiver qualquer pergunta ou sugestão entre em contato comigo
 
 ---
+
+## Examples
+
+ - Para quebrar um arquivo de hash md5 sem salt:
+        
+<code>python hashbreaker.py wordlist hashlist raw -t 1</code>
+        
+ - Para quebrar um arquivo de hash md5 com salt:
+
+<code>python hashbreaker.py wordlist hashlist raw -t 2 -s salt.example</code>
+
+ - Para quebrar um arquivo de senhas linux
+ 
+<code>python hashbreaker.py wordlist hashlist shadow</code>
+
+---
+
 
 ## Hash Table
 
