@@ -1,6 +1,12 @@
 # HashBreaker
 Linux password hashes breaker, used for linux post hacking process.
 
+## Screenshots
+
+![Screenshot](./Screenshot.png)
+
+---
+
 ## 💾 Installing
 
 Baixe o diretório
